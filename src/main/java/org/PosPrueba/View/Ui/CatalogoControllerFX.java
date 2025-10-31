@@ -10,6 +10,8 @@ import org.PosPrueba.Controller.ControladorPOS;
 import org.PosPrueba.Model.Producto;
 import org.PosPrueba.Model.Service.ServicioProducto;
 
+import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.util.List;
 
 public class CatalogoControllerFX {
@@ -24,66 +26,77 @@ public class CatalogoControllerFX {
     private TableColumn<Producto, String> colNombre;
 
     @FXML
+    private TableColumn<Producto, String> colDescripcion;
+
+    @FXML
+    private TableColumn<Producto, BigDecimal> colPrecio;
+
+    @FXML
     private TableColumn<Producto, Integer> colStock;
 
+    private ServicioProducto servicioProducto;
     private ControladorPOS controladorPOS;
-    private ServicioProducto servicioProducto; // opcional para pruebas directas
 
     @FXML
     public void initialize() {
-        // definir columnas si no están en FXML
-        if (colId != null) {
-            colId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        }
-        if (colNombre != null) {
-            colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        }
-        if (colStock != null) {
-            colStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
-        }
-        // la carga real de datos la hace setControladorPOS o setServicioProducto
+        // Configura cellValueFactory para enlazar columnas a propiedades del POJO Producto
+        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        colDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
+        colPrecio.setCellValueFactory(new PropertyValueFactory<>("precioUnitario"));
+        colStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
+
+        // tablaProductos puede inicializarse vacía hasta que inyectemos el servicio
+        tablaProductos.setItems(FXCollections.observableArrayList());
     }
 
-    public void setControladorPOS(ControladorPOS controladorPOS) {
-        this.controladorPOS = controladorPOS;
-        // si puedes acceder al servicio, cargar productos
-        try {
-            // intentar cargar vía reflection del controlador (si expone servicio)
-            // Mejor: en MainApp pasamos también el servicioProducto al controller si lo tenemos
-        } catch (Exception ignored) {
-        }
-    }
-
+    /**
+     * Inyectar servicio desde MainApp
+     */
     public void setServicioProducto(ServicioProducto servicioProducto) {
         this.servicioProducto = servicioProducto;
         cargarProductos();
     }
 
+    /**
+     * Inyectar controlador de aplicación (orquestador)
+     */
+    public void setControladorPOS(ControladorPOS controladorPOS) {
+        this.controladorPOS = controladorPOS;
+    }
+
     private void cargarProductos() {
+        if (servicioProducto == null || tablaProductos == null) return;
         try {
             List<Producto> lista = servicioProducto.listarProductos();
             ObservableList<Producto> obs = FXCollections.observableArrayList(lista);
             tablaProductos.setItems(obs);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
+            // Aquí podrías mostrar un diálogo de error con ControlsFX Notifications o Alert
         }
     }
 
     @FXML
     private void onAgregar() {
         Producto seleccionado = tablaProductos.getSelectionModel().getSelectedItem();
-        if (seleccionado != null && controladorPOS != null) {
-            try {
-                controladorPOS.onAgregar(seleccionado.getId(), 1); // agregar 1 unidad
-                // recargar tabla para ver stock actualizado
-                if (servicioProducto != null) {
-                    cargarProductos();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+        if (seleccionado == null) {
+            System.out.println("Seleccione un producto primero.");
+            return;
+        }
+
+        try {
+            // Lógica: usar controladorPOS para encapsular comandos / negocio
+            if (controladorPOS != null) {
+                controladorPOS.onAgregar(seleccionado.getId(), 1); // agregar 1 unidad (ejemplo)
+            } else if (servicioProducto != null) {
+                // fallback: si no hay controladorPOS, actualiza stock directamente
+                servicioProducto.actualizarStock(seleccionado.getId(), -1);
             }
-        } else {
-            System.out.println("No hay producto seleccionado o controlador no inyectado.");
+            // recargar lista para mostrar stock actualizado
+            cargarProductos();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 }

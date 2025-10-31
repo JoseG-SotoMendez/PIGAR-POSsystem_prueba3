@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.Button?>
-<VBox spacing="8" xmlns:fx="http://javafx.com/fxml" fx:controller="org.PosPrueba.View.Ui.CatalogoControllerFX">
-    <TableView fx:id="tablaProductos" prefHeight="400" prefWidth="800"/>
-    <Button text="Agregar al carrito" onAction="#onAgregar"/>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="org.PosPrueba.View.Ui.CatalogoControllerFX" spacing="8" prefWidth="900" prefHeight="600">
+    <TableView fx:id="tablaProductos" prefHeight="500.0">
+        <columns>
+            <TableColumn fx:id="colId" text="ID" prefWidth="60.0"/>
+            <TableColumn fx:id="colNombre" text="Nombre" prefWidth="240.0"/>
+            <TableColumn fx:id="colDescripcion" text="Descripción" prefWidth="280.0"/>
+            <TableColumn fx:id="colPrecio" text="Precio" prefWidth="120.0"/>
+            <TableColumn fx:id="colStock" text="Stock" prefWidth="80.0"/>
+        </columns>
+    </TableView>
+    <Button text="Agregar 1 unidad (demo)" onAction="#onAgregar"/>
 </VBox>

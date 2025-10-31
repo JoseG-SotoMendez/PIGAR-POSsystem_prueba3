@@ -11,9 +11,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Implementación JDBC de VentaDAO para MySQL.
- */
 public class MySQLVentaDAO implements VentaDAO {
 
     @Override
@@ -22,37 +19,25 @@ public class MySQLVentaDAO implements VentaDAO {
         String sqlInsertDetalle = "INSERT INTO detalle_venta (venta_id, producto_id, cantidad, precio_unitario) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = DataSourceConfig.getConnection()) {
-            // iniciar transacción
             conn.setAutoCommit(false);
             try (PreparedStatement psVenta = conn.prepareStatement(sqlInsertVenta, Statement.RETURN_GENERATED_KEYS)) {
-                // cliente_id (puede ser null)
                 if (venta.getClienteId() == null) {
                     psVenta.setNull(1, Types.BIGINT);
                 } else {
                     psVenta.setLong(1, venta.getClienteId());
                 }
-
-                // fecha -> Timestamp
                 LocalDateTime fecha = venta.getFecha();
                 Timestamp ts = (fecha == null) ? new Timestamp(System.currentTimeMillis()) : Timestamp.valueOf(fecha);
                 psVenta.setTimestamp(2, ts);
-
-                // total
-                psVenta.setBigDecimal(3, (venta.getTotal() == null) ? BigDecimal.ZERO : venta.getTotal());
-
+                psVenta.setBigDecimal(3, venta.getTotal() == null ? BigDecimal.ZERO : venta.getTotal());
                 psVenta.executeUpdate();
 
-                // obtener id generado
                 Long ventaId;
                 try (ResultSet keys = psVenta.getGeneratedKeys()) {
-                    if (keys.next()) {
-                        ventaId = keys.getLong(1);
-                    } else {
-                        throw new SQLException("No se pudo obtener el id de la venta insertada.");
-                    }
+                    if (keys.next()) ventaId = keys.getLong(1);
+                    else throw new SQLException("No se pudo obtener id generado.");
                 }
 
-                // insertar detalles
                 try (PreparedStatement psDet = conn.prepareStatement(sqlInsertDetalle)) {
                     for (DetalleVenta d : detalles) {
                         psDet.setLong(1, ventaId);
@@ -85,13 +70,10 @@ public class MySQLVentaDAO implements VentaDAO {
                 if (rs.next()) {
                     Venta v = new Venta();
                     v.setId(rs.getLong("id"));
-
                     Object cid = rs.getObject("cliente_id");
-                    if (cid != null) v.setClienteId(((Number) cid).longValue());
-
+                    if (cid != null) v.setClienteId(((Number)cid).longValue());
                     Timestamp ts = rs.getTimestamp("fecha");
                     if (ts != null) v.setFecha(ts.toLocalDateTime());
-
                     v.setTotal(rs.getBigDecimal("total"));
                     return v;
                 }
@@ -111,7 +93,7 @@ public class MySQLVentaDAO implements VentaDAO {
                 Venta v = new Venta();
                 v.setId(rs.getLong("id"));
                 Object cid = rs.getObject("cliente_id");
-                if (cid != null) v.setClienteId(((Number) cid).longValue());
+                if (cid != null) v.setClienteId(((Number)cid).longValue());
                 Timestamp ts = rs.getTimestamp("fecha");
                 if (ts != null) v.setFecha(ts.toLocalDateTime());
                 v.setTotal(rs.getBigDecimal("total"));

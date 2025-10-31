@@ -4,10 +4,12 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuItem?>
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.PosPrueba.View.Ui.MainControllerFX">
+
+<BorderPane fx:id="rootPane" xmlns:fx="http://javafx.com/fxml" fx:controller="org.PosPrueba.View.Ui.MainControllerFX">
     <top>
         <MenuBar>
             <Menu text="Archivo">
+                <MenuItem text="Abrir catálogo" onAction="#onAbrirCatalogo"/>
                 <MenuItem text="Salir" onAction="#onSalir"/>
             </Menu>
         </MenuBar>

@@ -3,8 +3,13 @@ package org.PosPrueba.Config;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Properties;
 
+/**
+ * Utilidad para obtener conexiones JDBC leyendo application.properties.
+ * Lanza SQLException para que los DAOs puedan declarar solo SQLException.
+ */
 public final class DataSourceConfig {
 
     private static final Properties PROPS = new Properties();
@@ -17,23 +22,24 @@ public final class DataSourceConfig {
                 if (driver != null && !driver.isBlank()) {
                     try {
                         Class.forName(driver);
-                    } catch (ClassNotFoundException ignored) {}
+                    } catch (ClassNotFoundException ignored) {
+                        // driver no encontrado: el driver JDBC moderno suele auto-registrarse
+                    }
                 }
             } else {
-                System.err.println("application.properties no encontrado en classpath");
+                throw new ExceptionInInitializerError("No se encontró application.properties en classpath");
             }
         } catch (Exception e) {
-            throw new ExceptionInInitializerError(e);
+            throw new ExceptionInInitializerError("Error leyendo application.properties: " + e.getMessage());
         }
     }
 
-    private DataSourceConfig() {}
+    private DataSourceConfig() { /* utilitaria */ }
 
     /**
-     * Devuelve una conexión JDBC usando los parámetros de application.properties
-     * db.url, db.user, db.password
+     * Devuelve una conexión JDBC. Lanza SQLException si hay error al conectarse.
      */
-    public static Connection getConnection() throws Exception {
+    public static Connection getConnection() throws SQLException {
         String url = PROPS.getProperty("db.url");
         String user = PROPS.getProperty("db.user");
         String pass = PROPS.getProperty("db.password");

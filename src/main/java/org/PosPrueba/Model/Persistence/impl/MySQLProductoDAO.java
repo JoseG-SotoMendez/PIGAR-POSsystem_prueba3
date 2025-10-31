@@ -1,8 +1,8 @@
 package org.PosPrueba.Model.Persistence.impl;
 
+import org.PosPrueba.Config.DataSourceConfig;
 import org.PosPrueba.Model.Producto;
 import org.PosPrueba.Model.Persistence.Dao.ProductoDAO;
-import org.PosPrueba.Config.DataSourceConfig;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -12,7 +12,6 @@ import java.util.List;
 public class MySQLProductoDAO implements ProductoDAO {
 
     public MySQLProductoDAO() {
-        // constructor vacío
     }
 
     @Override

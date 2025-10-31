@@ -6,36 +6,35 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.PosPrueba.Controller.ControladorPOS;
-import org.PosPrueba.Model.Persistence.Factory.FabricaDAO;
-import org.PosPrueba.Model.Persistence.Dao.ProductoDAO;
-import org.PosPrueba.Model.Service.ServicioProducto;
 import org.PosPrueba.Controller.Command.InvocadorComandos;
-import org.PosPrueba.View.Ui.CatalogoControllerFX;
+import org.PosPrueba.Model.Persistence.Dao.ProductoDAO;
+import org.PosPrueba.Model.Persistence.Factory.FabricaDAO;
+import org.PosPrueba.Model.Service.ServicioProducto;
+import org.PosPrueba.View.Ui.MainControllerFX;
 
 public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        // Inicializar capas (fábricas/servicios/controlador)
+        // crear DAOs / servicios
         ProductoDAO productoDAO = FabricaDAO.crearProductoDAO();
         ServicioProducto servicioProducto = new ServicioProducto(productoDAO);
         InvocadorComandos invocador = new InvocadorComandos();
         ControladorPOS controladorPOS = new ControladorPOS(invocador, servicioProducto);
 
-        // Cargar Main.fxml
+        // cargar Main.fxml
         FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("/fxml/Main.fxml"));
         Parent mainRoot = mainLoader.load();
 
-        // cargar Catalogo.fxml y pasarle el controladorPOS
-        FXMLLoader catLoader = new FXMLLoader(getClass().getResource("/fxml/Catalogo.fxml"));
-        Parent catalogoRoot = catLoader.load();
-        CatalogoControllerFX catalogoController = catLoader.getController();
-        catalogoController.setControladorPOS(controladorPOS); // inyectar backend
+        // inyectar servicios en el controller principal
+        Object ctrl = mainLoader.getController();
+        if (ctrl instanceof MainControllerFX) {
+            MainControllerFX mainController = (MainControllerFX) ctrl;
+            mainController.setServicioProducto(servicioProducto);
+            mainController.setControladorPOS(controladorPOS);
 
-        // insertar el catálogo dentro del main (si el BorderPane tiene fx:id "rootPane")
-        Object mainController = mainLoader.getController();
-        if (mainController instanceof org.PosPrueba.View.Ui.MainControllerFX) {
-            ((org.PosPrueba.View.Ui.MainControllerFX) mainController).setCenterNode(catalogoRoot);
+            // opcional: abrir catálogo al inicio
+            // mainController.onAbrirCatalogo(null);
         }
 
         primaryStage.setTitle("POS - Demo");
