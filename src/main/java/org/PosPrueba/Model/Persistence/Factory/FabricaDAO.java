@@ -2,6 +2,8 @@ package org.PosPrueba.Model.Persistence.Factory;
 
 import org.PosPrueba.Model.Persistence.Dao.ProductoDAO;
 import org.PosPrueba.Model.Persistence.impl.MySQLProductoDAO;
+import org.PosPrueba.Model.Persistence.Dao.UsuarioDAO;
+import org.PosPrueba.Model.Persistence.impl.MySQLUsuarioDAO;
 
 /**
  * Fábrica simple: por ahora solo crea DAOs MySQL.
@@ -18,5 +20,8 @@ public final class FabricaDAO {
         return new MySQLProductoDAO();
     }
 
+    public static UsuarioDAO crearUsuarioDAO() {
+        return new MySQLUsuarioDAO();
+    }
 
 }

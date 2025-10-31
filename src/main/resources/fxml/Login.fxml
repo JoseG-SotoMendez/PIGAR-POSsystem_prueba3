@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
+<?import java.net.URL?>
 <VBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="org.PosPrueba.View.Ui.LoginController"
       alignment="CENTER"
@@ -12,6 +12,11 @@
       prefWidth="400"
       prefHeight="500"
       styleClass="login-container">
+
+    <!-- ✅ Agregar stylesheets AQUÍ -->
+    <stylesheets>
+        <URL value="@../styles/styles.css"/>
+    </stylesheets>
 
     <padding>
         <Insets top="40" right="40" bottom="40" left="40"/>
@@ -31,18 +36,22 @@
         </Label>
     </VBox>
 
+    <!-- Campo Usuario -->
     <VBox spacing="5">
-        <Label text="Usuario:" styleClass="login-label"/>
+        <Label text="Usuario" styleClass="login-label"/>
         <TextField fx:id="txtUsername" promptText="Ingrese su usuario" styleClass="login-field"/>
     </VBox>
 
+    <!-- Campo Contraseña -->
     <VBox spacing="5">
-        <Label text="Contraseña:" styleClass="login-label"/>
+        <Label text="Contraseña" styleClass="login-label"/>
         <PasswordField fx:id="txtPassword" promptText="Ingrese su contraseña" styleClass="login-field"/>
     </VBox>
 
+    <!-- Mensaje de error -->
     <Label fx:id="lblError" text="Error message" styleClass="error-label" visible="false" wrapText="true"/>
 
+    <!-- Botones -->
     <HBox spacing="10" alignment="CENTER">
         <Button fx:id="btnLogin" text="Iniciar Sesión" onAction="#onLogin" styleClass="btn-primary" prefWidth="150"/>
         <Button text="Cancelar" onAction="#onCancelar" styleClass="btn-secondary" prefWidth="150"/>
@@ -51,4 +60,5 @@
     <VBox.margin>
         <Insets top="20"/>
     </VBox.margin>
+
 </VBox>

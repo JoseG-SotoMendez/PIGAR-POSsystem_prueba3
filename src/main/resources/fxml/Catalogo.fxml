@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="org.PosPrueba.View.Ui.CatalogoControllerFX" spacing="8" prefWidth="900" prefHeight="600">
+<?import java.net.URL?>
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.PosPrueba.View.Ui.CatalogoControllerFX"
+      spacing="8"
+      prefWidth="900"
+      prefHeight="600">
+
+    <!-- ✅ Agregar stylesheets AQUÍ -->
+    <stylesheets>
+        <URL value="@../styles/styles.css"/>
+    </stylesheets>
+
     <TableView fx:id="tablaProductos" prefHeight="500.0">
         <columns>
             <TableColumn fx:id="colId" text="ID" prefWidth="60.0"/>
@@ -15,5 +25,7 @@
             <TableColumn fx:id="colStock" text="Stock" prefWidth="80.0"/>
         </columns>
     </TableView>
+
     <Button text="Agregar 1 unidad (demo)" onAction="#onAgregar"/>
+
 </VBox>

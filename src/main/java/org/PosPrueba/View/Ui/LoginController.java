@@ -27,6 +27,7 @@ public class LoginController {
 
     private ServicioUsuario servicioUsuario;
 
+
     @FXML
     public void initialize() {
         lblError.setVisible(false);
@@ -99,4 +100,6 @@ public class LoginController {
         Stage stage = (Stage) btnLogin.getScene().getWindow();
         stage.close();
     }
+
+
 }
