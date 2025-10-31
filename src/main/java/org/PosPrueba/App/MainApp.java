@@ -16,6 +16,9 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Login.fxml"));
+        Scene scene = new Scene(root);
+
         // crear DAOs / servicios
         ProductoDAO productoDAO = FabricaDAO.crearProductoDAO();
         ServicioProducto servicioProducto = new ServicioProducto(productoDAO);
@@ -37,8 +40,9 @@ public class MainApp extends Application {
             // mainController.onAbrirCatalogo(null);
         }
 
-        primaryStage.setTitle("POS - Demo");
-        primaryStage.setScene(new Scene(mainRoot, 1000, 700));
+        primaryStage.setTitle("PIGAR POS - Sistema de Ventas");
+        primaryStage.setScene(scene);
+        primaryStage.setMaximized(true);
         primaryStage.show();
     }
 

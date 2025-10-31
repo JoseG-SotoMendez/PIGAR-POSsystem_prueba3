@@ -41,7 +41,7 @@
 
         <HBox spacing="10" alignment="CENTER_RIGHT">
             <Label text="Subtotal:" styleClass="total-label"/>
-            <Label fx:id="lblSubtotal" text="$0.00" styleClass="total-value" prefWidth="100" alignment="CENTER_RIGHT"/>
+            <Label fx:id="lblSubtotal" text="0.00" styleClass="total-value" prefWidth="100" alignment="CENTER_RIGHT"/>
         </HBox>
 
         <HBox spacing="10" alignment="CENTER_RIGHT">
@@ -52,7 +52,7 @@
 
         <HBox spacing="10" alignment="CENTER_RIGHT">
             <Label text="Impuestos (13%):" styleClass="total-label"/>
-            <Label fx:id="lblImpuestos" text="$0.00" styleClass="total-value" prefWidth="100" alignment="CENTER_RIGHT"/>
+            <Label fx:id="lblImpuestos" text="0.00" styleClass="total-value" prefWidth="100" alignment="CENTER_RIGHT"/>
         </HBox>
 
         <Separator/>
@@ -63,7 +63,7 @@
                     <Font name="System Bold" size="16"/>
                 </font>
             </Label>
-            <Label fx:id="lblTotal" text="$0.00" styleClass="total-value-final" prefWidth="100" alignment="CENTER_RIGHT">
+            <Label fx:id="lblTotal" text="0.00" styleClass="total-value-final" prefWidth="100" alignment="CENTER_RIGHT">
                 <font>
                     <Font name="System Bold" size="18"/>
                 </font>

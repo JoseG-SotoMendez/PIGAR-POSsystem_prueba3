@@ -17,4 +17,6 @@ public final class FabricaDAO {
         // MySQLProductoDAO usa DataSourceConfig internamente
         return new MySQLProductoDAO();
     }
+
+
 }

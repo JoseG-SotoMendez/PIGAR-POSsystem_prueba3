@@ -35,7 +35,7 @@
                 <Insets top="20" right="20" bottom="20" left="20"/>
             </padding>
             <Label text="Ventas Hoy" styleClass="kpi-label"/>
-            <Label fx:id="lblVentasHoy" text="$0.00" styleClass="kpi-value">
+            <Label fx:id="lblVentasHoy" text="0.00" styleClass="kpi-value">
                 <font>
                     <Font name="System Bold" size="28"/>
                 </font>
@@ -74,7 +74,7 @@
                 <Insets top="20" right="20" bottom="20" left="20"/>
             </padding>
             <Label text="Total Ingresos" styleClass="kpi-label"/>
-            <Label fx:id="lblTotalIngresos" text="$0.00" styleClass="kpi-value">
+            <Label fx:id="lblTotalIngresos" text="0.00" styleClass="kpi-value">
                 <font>
                     <Font name="System Bold" size="28"/>
                 </font>
