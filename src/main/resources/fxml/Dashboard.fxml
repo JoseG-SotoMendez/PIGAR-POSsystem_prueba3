@@ -5,10 +5,15 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
+<?import java.net.URL?>
 <VBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="org.PosPrueba.View.Ui.DashboardController"
       spacing="20"
       styleClass="dashboard-container">
+
+    <stylesheets>
+        <URL value="@../styles/styles.css"/>
+    </stylesheets>
 
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>
@@ -90,7 +95,7 @@
             </font>
         </Label>
 
-        <HBox spacing="15" fx:id="vboxAccionesRapidas">
+        <HBox spacing="15" fx:id="hboxAccionesRapidas">
             <Button text="Nueva Venta" onAction="#onNuevaVenta" styleClass="btn-primary" prefWidth="150" prefHeight="50"/>
             <Button text="Agregar Producto" onAction="#onAgregarProducto" styleClass="btn-secondary" prefWidth="150" prefHeight="50"/>
             <Button text="Reponer Stock" onAction="#onReponerStock" styleClass="btn-secondary" prefWidth="150" prefHeight="50"/>

@@ -2,6 +2,7 @@ package org.PosPrueba.View.Ui;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.PosPrueba.Model.Service.ServicioProducto;
 import org.PosPrueba.Model.Producto;
@@ -11,6 +12,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class DashboardController {
+    // Cambiar de VBox a HBox
+    @FXML
+    private HBox hboxAccionesRapidas;  // ← Antes: vboxAccionesRapidas
 
     @FXML
     private Label lblVentasHoy;

@@ -14,7 +14,8 @@ public class MySQLUsuarioDAO implements UsuarioDAO {
     @Override
     public Long guardar(Usuario usuario) throws SQLException {
         if (usuario.getId() == null) {
-            String sql = "INSERT INTO usuarios (username, password, nombre, apellido, rol, activo) VALUES (?, ?, ?, ?, ?, ?)";
+            // INSERT: incluir TODAS las columnas que la BD tiene
+            String sql = "INSERT INTO usuarios (username, password, nombre, apellido, email, rol, activo, fecha_creacion) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             try (Connection conn = DataSourceConfig.getConnection();
                  PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                 ps.setString(1, usuario.getUsername());
@@ -24,8 +25,11 @@ public class MySQLUsuarioDAO implements UsuarioDAO {
                 ps.setString(5, usuario.getEmail());
                 ps.setString(6, usuario.getRol() == null ? null : usuario.getRol().name());
                 ps.setBoolean(7, usuario.isActivo());
-                Timestamp ts = usuario.getFechaCreacion() == null ? Timestamp.valueOf(LocalDateTime.now()) : Timestamp.valueOf(usuario.getFechaCreacion());
+                Timestamp ts = usuario.getFechaCreacion() == null ?
+                        Timestamp.valueOf(LocalDateTime.now()) :
+                        Timestamp.valueOf(usuario.getFechaCreacion());
                 ps.setTimestamp(8, ts);
+
                 ps.executeUpdate();
                 try (ResultSet keys = ps.getGeneratedKeys()) {
                     if (keys.next()) {
@@ -36,8 +40,8 @@ public class MySQLUsuarioDAO implements UsuarioDAO {
                 }
             }
         } else {
-            // Si ya existe id -> actualizar
-            String sql = "INSERT INTO usuarios (username, password, nombre, apellido, rol, activo) VALUES (?, ?, ?, ?, ?, ?)";
+            // UPDATE: si ya existe ID
+            String sql = "UPDATE usuarios SET username=?, password=?, nombre=?, apellido=?, email=?, rol=?, activo=? WHERE id=?";
             try (Connection conn = DataSourceConfig.getConnection();
                  PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setString(1, usuario.getUsername());
@@ -53,6 +57,7 @@ public class MySQLUsuarioDAO implements UsuarioDAO {
             }
         }
     }
+
 
     @Override
     public Usuario buscarPorId(Long id) throws SQLException {

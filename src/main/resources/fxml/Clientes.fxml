@@ -5,9 +5,14 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
+<?import java.net.URL?>
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="org.PosPrueba.View.Ui.ClientesController"
             styleClass="clientes-container">
+
+    <stylesheets>
+        <URL value="@../styles/styles.css"/>
+    </stylesheets>
 
     <top>
         <VBox spacing="10">
