@@ -4,7 +4,6 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
-<?import java.net.URL?>
 <VBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="org.PosPrueba.View.Ui.LoginController"
       alignment="CENTER"

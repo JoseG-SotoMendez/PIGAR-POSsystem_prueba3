@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -11,10 +12,10 @@
       styleClass="carrito-container"
       prefWidth="400">
 
-    <!-- ✅ Agregar stylesheets AQUÍ -->
     <stylesheets>
         <URL value="@../styles/styles.css"/>
     </stylesheets>
+
 
     <padding>
         <Insets top="10" right="10" bottom="10" left="10"/>
@@ -26,6 +27,64 @@
         </font>
     </Label>
 
-    <!-- ... resto del contenido ... -->
+    <!-- Tabla de items -->
+    <TableView fx:id="tblCarrito" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colNombre" text="Producto" prefWidth="150"/>
+            <TableColumn fx:id="colCantidad" text="Cant." prefWidth="60"/>
+            <TableColumn fx:id="colPrecio" text="Precio" prefWidth="80"/>
+            <TableColumn fx:id="colSubtotal" text="Subtotal" prefWidth="90"/>
+        </columns>
+    </TableView>
+
+    <Button text="Quitar Item" onAction="#onQuitarItem" styleClass="btn-danger" prefWidth="120"/>
+
+    <!-- Totales -->
+    <VBox spacing="8" styleClass="totales-box">
+        <padding>
+            <Insets top="15" right="10" bottom="15" left="10"/>
+        </padding>
+
+        <HBox spacing="10" alignment="CENTER_RIGHT">
+            <Label text="Subtotal:" styleClass="total-label"/>
+            <Label fx:id="lblSubtotal" text="0.00" styleClass="total-value" prefWidth="100" alignment="CENTER_RIGHT"/>
+        </HBox>
+
+        <HBox spacing="10" alignment="CENTER_RIGHT">
+            <Label text="Descuento:" styleClass="total-label"/>
+            <TextField fx:id="txtDescuento" text="0.00" prefWidth="80" alignment="CENTER_RIGHT"/>
+            <Button text="Aplicar" onAction="#onAplicarDescuento" styleClass="btn-small"/>
+        </HBox>
+
+        <HBox spacing="10" alignment="CENTER_RIGHT">
+            <Label text="Impuestos (13%):" styleClass="total-label"/>
+            <Label fx:id="lblImpuestos" text="0.00" styleClass="total-value" prefWidth="100" alignment="CENTER_RIGHT"/>
+        </HBox>
+
+        <Separator/>
+
+        <HBox spacing="10" alignment="CENTER_RIGHT">
+            <Label text="TOTAL:" styleClass="total-label-final">
+                <font>
+                    <Font name="System Bold" size="16"/>
+                </font>
+            </Label>
+            <Label fx:id="lblTotal" text="0.00" styleClass="total-value-final" prefWidth="100" alignment="CENTER_RIGHT">
+                <font>
+                    <Font name="System Bold" size="18"/>
+                </font>
+            </Label>
+        </HBox>
+    </VBox>
+
+    <!-- Botones de acción -->
+    <VBox spacing="10">
+        <Button fx:id="btnCobrar" text="Cobrar (F9)" onAction="#onCobrar" styleClass="btn-primary btn-large" prefHeight="50">
+            <font>
+                <Font name="System Bold" size="16"/>
+            </font>
+        </Button>
+        <Button fx:id="btnCancelar" text="Cancelar Venta" onAction="#onCancelar" styleClass="btn-danger" prefHeight="40"/>
+    </VBox>
 
 </VBox>

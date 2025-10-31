@@ -1,19 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
-<?import java.net.URL?>
 <VBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="org.PosPrueba.View.Ui.DashboardController"
       spacing="20"
       styleClass="dashboard-container">
-
-    <!-- ✅ Agregar stylesheets AQUÍ -->
-    <stylesheets>
-        <URL value="@../styles/styles.css"/>
-    </stylesheets>
 
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>
@@ -25,6 +20,81 @@
         </font>
     </Label>
 
-    <!-- ... resto del contenido ... -->
+    <!-- KPIs -->
+    <GridPane hgap="20" vgap="20">
+        <columnConstraints>
+            <ColumnConstraints percentWidth="25"/>
+            <ColumnConstraints percentWidth="25"/>
+            <ColumnConstraints percentWidth="25"/>
+            <ColumnConstraints percentWidth="25"/>
+        </columnConstraints>
+
+        <!-- Ventas Hoy -->
+        <VBox styleClass="kpi-card" spacing="10" GridPane.columnIndex="0">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+            <Label text="Ventas Hoy" styleClass="kpi-label"/>
+            <Label fx:id="lblVentasHoy" text="0.00" styleClass="kpi-value">
+                <font>
+                    <Font name="System Bold" size="28"/>
+                </font>
+            </Label>
+        </VBox>
+
+        <!-- Tickets Hoy -->
+        <VBox styleClass="kpi-card" spacing="10" GridPane.columnIndex="1">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+            <Label text="Tickets Hoy" styleClass="kpi-label"/>
+            <Label fx:id="lblTicketsHoy" text="0" styleClass="kpi-value">
+                <font>
+                    <Font name="System Bold" size="28"/>
+                </font>
+            </Label>
+        </VBox>
+
+        <!-- Productos Bajo Stock -->
+        <VBox styleClass="kpi-card kpi-warning" spacing="10" GridPane.columnIndex="2">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+            <Label text="Productos Bajo Stock" styleClass="kpi-label"/>
+            <Label fx:id="lblProductosBajoStock" text="0" styleClass="kpi-value">
+                <font>
+                    <Font name="System Bold" size="28"/>
+                </font>
+            </Label>
+        </VBox>
+
+        <!-- Total Ingresos -->
+        <VBox styleClass="kpi-card" spacing="10" GridPane.columnIndex="3">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+            <Label text="Total Ingresos" styleClass="kpi-label"/>
+            <Label fx:id="lblTotalIngresos" text="0.00" styleClass="kpi-value">
+                <font>
+                    <Font name="System Bold" size="28"/>
+                </font>
+            </Label>
+        </VBox>
+    </GridPane>
+
+    <!-- Acciones Rápidas -->
+    <VBox spacing="10">
+        <Label text="Acciones Rápidas" styleClass="section-title">
+            <font>
+                <Font name="System Bold" size="18"/>
+            </font>
+        </Label>
+
+        <HBox spacing="15" fx:id="vboxAccionesRapidas">
+            <Button text="Nueva Venta" onAction="#onNuevaVenta" styleClass="btn-primary" prefWidth="150" prefHeight="50"/>
+            <Button text="Agregar Producto" onAction="#onAgregarProducto" styleClass="btn-secondary" prefWidth="150" prefHeight="50"/>
+            <Button text="Reponer Stock" onAction="#onReponerStock" styleClass="btn-secondary" prefWidth="150" prefHeight="50"/>
+        </HBox>
+    </VBox>
 
 </VBox>

@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
-<?import java.net.URL?>
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="org.PosPrueba.View.Ui.ClientesController"
             styleClass="clientes-container">
-
-    <!-- ✅ Agregar stylesheets AQUÍ -->
-    <stylesheets>
-        <URL value="@../styles/styles.css"/>
-    </stylesheets>
 
     <top>
         <VBox spacing="10">
@@ -33,6 +28,75 @@
         </VBox>
     </top>
 
-    <!-- ... resto del contenido ... -->
+    <center>
+        <SplitPane dividerPositions="0.6">
+            <!-- Tabla de clientes -->
+            <VBox spacing="10">
+                <padding>
+                    <Insets top="10" right="10" bottom="10" left="20"/>
+                </padding>
+
+                <TableView fx:id="tblClientes" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colId" text="ID" prefWidth="50"/>
+                        <TableColumn fx:id="colNombre" text="Nombre" prefWidth="120"/>
+                        <TableColumn fx:id="colApellido" text="Apellido" prefWidth="120"/>
+                        <TableColumn fx:id="colDocumento" text="Documento" prefWidth="100"/>
+                        <TableColumn fx:id="colTelefono" text="Teléfono" prefWidth="100"/>
+                        <TableColumn fx:id="colEmail" text="Email" prefWidth="150"/>
+                    </columns>
+                </TableView>
+            </VBox>
+
+            <!-- Formulario de cliente -->
+            <VBox spacing="15" styleClass="form-container">
+                <padding>
+                    <Insets top="10" right="20" bottom="10" left="10"/>
+                </padding>
+
+                <Label text="Datos del Cliente" styleClass="section-title">
+                    <font>
+                        <Font name="System Bold" size="16"/>
+                    </font>
+                </Label>
+
+                <GridPane hgap="10" vgap="12">
+                    <columnConstraints>
+                        <ColumnConstraints minWidth="100" prefWidth="100"/>
+                        <ColumnConstraints hgrow="ALWAYS"/>
+                    </columnConstraints>
+
+                    <Label text="Nombre: *" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                    <TextField fx:id="txtNombre" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                    <Label text="Apellido: *" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                    <TextField fx:id="txtApellido" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                    <Label text="Documento: *" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                    <TextField fx:id="txtDocumento" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                    <Label text="Teléfono:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                    <TextField fx:id="txtTelefono" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+                    <Label text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                    <TextField fx:id="txtEmail" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+                    <Label text="Dirección:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+                    <TextArea fx:id="txtDireccion" prefRowCount="3" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+                </GridPane>
+
+                <Label text="* Campos obligatorios" styleClass="hint-label">
+                    <font>
+                        <Font size="11"/>
+                    </font>
+                </Label>
+
+                <HBox spacing="10" alignment="CENTER">
+                    <Button fx:id="btnGuardar" text="Guardar" onAction="#onGuardar" styleClass="btn-primary" prefWidth="120"/>
+                    <Button fx:id="btnEliminar" text="Eliminar" onAction="#onEliminar" styleClass="btn-danger" prefWidth="120"/>
+                </HBox>
+            </VBox>
+        </SplitPane>
+    </center>
 
 </BorderPane>
