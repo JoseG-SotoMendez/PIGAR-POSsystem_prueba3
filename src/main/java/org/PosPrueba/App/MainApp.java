@@ -8,39 +8,41 @@ import javafx.stage.Stage;
 import org.PosPrueba.Controller.ControladorPOS;
 import org.PosPrueba.Controller.Command.InvocadorComandos;
 import org.PosPrueba.Model.Persistence.Dao.ProductoDAO;
+import org.PosPrueba.Model.Persistence.Dao.UsuarioDAO;
 import org.PosPrueba.Model.Persistence.Factory.FabricaDAO;
 import org.PosPrueba.Model.Service.ServicioProducto;
+import org.PosPrueba.Model.Service.ServicioUsuario;
+import org.PosPrueba.View.Ui.LoginController;
 import org.PosPrueba.View.Ui.MainControllerFX;
 
 public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        // crear DAOs / servicios
+        // Crear TODOS los servicios necesarios
         ProductoDAO productoDAO = FabricaDAO.crearProductoDAO();
+        UsuarioDAO usuarioDAO = FabricaDAO.crearUsuarioDAO();
+
         ServicioProducto servicioProducto = new ServicioProducto(productoDAO);
+        ServicioUsuario servicioUsuario = new ServicioUsuario(usuarioDAO);
+
         InvocadorComandos invocador = new InvocadorComandos();
         ControladorPOS controladorPOS = new ControladorPOS(invocador, servicioProducto);
 
-        // cargar Main.fxml
-        FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("/fxml/Main.fxml"));
-        Parent mainRoot = mainLoader.load();
+        // Cargar Login con servicios inyectados
+        FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("/fxml/Login.fxml"));
+        Parent loginRoot = loginLoader.load();
 
-        // inyectar servicios en el controller principal
-        Object ctrl = mainLoader.getController();
-        if (ctrl instanceof MainControllerFX) {
-            MainControllerFX mainController = (MainControllerFX) ctrl;
-            mainController.setServicioProducto(servicioProducto);
-            mainController.setControladorPOS(controladorPOS);
+        // INYECTAR ServicioUsuario en el LoginController
+        LoginController loginController = loginLoader.getController();
+        loginController.setServicioUsuario(servicioUsuario);
 
-            // opcional: abrir catálogo al inicio
-            // mainController.onAbrirCatalogo(null);
-        }
-
-        primaryStage.setTitle("POS - Demo");
-        primaryStage.setScene(new Scene(mainRoot, 1000, 700));
+        Scene scene = new Scene(loginRoot);
+        primaryStage.setTitle("PIGAR POS - Sistema de Ventas");
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
+
 
     public static void main(String[] args) {
         launch(args);
