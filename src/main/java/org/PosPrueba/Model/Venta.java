@@ -41,4 +41,8 @@ public class Venta {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public void setFecha(LocalDateTime fecha) {
+        this.fecha = fecha;
+    }
 }
