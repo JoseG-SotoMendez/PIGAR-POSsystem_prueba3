@@ -1,4 +1,6 @@
 package org.PosPrueba.Controller.Command;
 
-public class Comando {
+public interface Comando {
+    void ejecutar() throws Exception;
+    void deshacer() throws Exception;
 }

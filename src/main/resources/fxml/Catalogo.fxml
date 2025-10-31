@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.Button?>
+<VBox spacing="8" xmlns:fx="http://javafx.com/fxml" fx:controller="org.PosPrueba.View.Ui.CatalogoControllerFX">
+    <TableView fx:id="tablaProductos" prefHeight="400" prefWidth="800"/>
+    <Button text="Agregar al carrito" onAction="#onAgregar"/>
+</VBox>
