@@ -74,4 +74,46 @@ public class MainControllerFX {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    private void onAbrirClientes(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Clientes.fxml"));
+            Node root = loader.load();
+
+            ClientesController clientesController = loader.getController();
+            // Inyectar servicios si aplica
+            // clientesController.setServicioCliente(new ServicioCliente(...));
+
+            setCenterNode(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void onAbrirCarrito(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Carrito.fxml"));
+            Node root = loader.load();
+            setCenterNode(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void onAbrirDashboard(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Dashboard.fxml"));
+            Node root = loader.load();
+
+            DashboardController dashboardController = loader.getController();
+            // dashboardController.setServicioProducto(servicioProducto);
+
+            setCenterNode(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

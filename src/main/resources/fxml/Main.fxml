@@ -15,6 +15,9 @@
         <MenuBar>
             <Menu text="Archivo">
                 <MenuItem text="Abrir catálogo" onAction="#onAbrirCatalogo"/>
+                <MenuItem text="Clientes" onAction="#onAbrirClientes"/>
+                <MenuItem text="Carrito" onAction="#onAbrirCarrito"/>
+                <MenuItem text="Dashboard" onAction="#onAbrirDashboard"/>
                 <MenuItem text="Salir" onAction="#onSalir"/>
             </Menu>
         </MenuBar>

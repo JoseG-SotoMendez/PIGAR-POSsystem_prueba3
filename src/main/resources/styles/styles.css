@@ -279,15 +279,33 @@
 .menu-bar .label {
     -fx-text-fill: white;
     -fx-font-size: 14px;
+    -fx-font-weight: bold;
 }
 
-.menu-bar .menu:hover {
+.menu:hover {
     -fx-background-color: #1f2740;
 }
 
 .context-menu {
     -fx-background-color: white;
     -fx-border-color: #e0e0e0;
+}
+
+.menu-item {
+    -fx-background-color: white;
+}
+
+.menu-item .label {
+    -fx-text-fill: black;
+    -fx-font-size: 13px;
+}
+
+.menu-item:focused, .menu-item:hover {
+    -fx-background-color: #e6f2ff;
+}
+
+.menu-item:focused .label, .menu-item:hover .label {
+    -fx-text-fill: black;
 }
 
 /* ========================================
