@@ -1,6 +1,5 @@
 package org.PosPrueba.Model.Service;
 
-import com.sun.jdi.connect.spi.Connection;
 import org.PosPrueba.Config.DataSourceConfig;
 import org.PosPrueba.Model.DetalleVenta;
 import org.PosPrueba.Model.Venta;
@@ -13,6 +12,7 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,6 +72,6 @@ public class ServicioVenta {
              ResultSet rs = st.executeQuery(sql)) {
             if (rs.next()) return rs.getBigDecimal(1) != null ? rs.getBigDecimal(1) : BigDecimal.ZERO;
         }
-        return BigDecimal.ZERO
-
+        return BigDecimal.ZERO;
     }
+}
