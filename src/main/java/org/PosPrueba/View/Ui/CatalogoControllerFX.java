@@ -66,14 +66,18 @@ public class CatalogoControllerFX {
     }
 
     private void cargarProductos() {
-        if (servicioProducto == null || tablaProductos == null) return;
+        System.out.println(">>> Ejecutando cargarProductos()");
+        if (servicioProducto == null || tablaProductos == null) {
+            System.out.println(">>> servicioProducto o tablaProductos son nulos");
+            return;
+        }
         try {
             List<Producto> lista = servicioProducto.listarProductos();
+            System.out.println(">>> Productos obtenidos: " + lista.size());
             ObservableList<Producto> obs = FXCollections.observableArrayList(lista);
             tablaProductos.setItems(obs);
         } catch (SQLException e) {
             e.printStackTrace();
-            // Aquí podrías mostrar un diálogo de error con ControlsFX Notifications o Alert
         }
     }
 

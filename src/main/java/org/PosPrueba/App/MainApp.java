@@ -35,7 +35,9 @@ public class MainApp extends Application {
 
         // INYECTAR ServicioUsuario en el LoginController
         LoginController loginController = loginLoader.getController();
+        loginController.setServicioProducto(servicioProducto);
         loginController.setServicioUsuario(servicioUsuario);
+        loginController.setControladorPOS(controladorPOS);
 
         Scene scene = new Scene(loginRoot);
         primaryStage.setTitle("PIGAR POS - Sistema de Ventas");

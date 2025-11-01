@@ -150,6 +150,10 @@
     -fx-background-radius: 6px;
 }
 
+.table-view .column-header-background .label {
+    -fx-text-fill: white;
+}
+
 .table-view .column-header {
     -fx-background-color: #2e3a59;
     -fx-text-fill: white;

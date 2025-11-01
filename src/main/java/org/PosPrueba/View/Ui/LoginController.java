@@ -6,6 +6,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import org.PosPrueba.Controller.ControladorPOS;
+import org.PosPrueba.Model.Service.ServicioCliente;
+import org.PosPrueba.Model.Service.ServicioProducto;
 import org.PosPrueba.Model.Usuario;
 import org.PosPrueba.Model.Service.ServicioUsuario;
 
@@ -27,6 +30,10 @@ public class LoginController {
 
     private ServicioUsuario servicioUsuario;
 
+    private ServicioProducto servicioProducto;
+    private ServicioCliente servicioCliente;
+    private ControladorPOS controladorPOS;
+
 
     @FXML
     public void initialize() {
@@ -38,6 +45,16 @@ public class LoginController {
 
     public void setServicioUsuario(ServicioUsuario servicioUsuario) {
         this.servicioUsuario = servicioUsuario;
+    }
+
+    public void setServicioCliente(ServicioCliente servicioCliente) {this.servicioCliente = servicioCliente;
+    }
+    public void setServicioProducto(ServicioProducto servicioProducto) {  // ← AGREGAR
+        this.servicioProducto = servicioProducto;
+    }
+
+    public void setControladorPOS(ControladorPOS controladorPOS) {
+        this.controladorPOS = controladorPOS;
     }
 
     @FXML
@@ -71,6 +88,8 @@ public class LoginController {
             Parent root = loader.load();
 
             MainControllerFX mainController = loader.getController();
+            mainController.setServicioProducto(servicioProducto);
+            mainController.setControladorPOS(controladorPOS);
             // Aquí inyectarías todos los servicios necesarios
             // mainController.setServicios(...);
 
