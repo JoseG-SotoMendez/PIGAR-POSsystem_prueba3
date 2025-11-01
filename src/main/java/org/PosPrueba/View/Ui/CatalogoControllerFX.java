@@ -3,6 +3,7 @@ package org.PosPrueba.View.Ui;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -66,18 +67,17 @@ public class CatalogoControllerFX {
     }
 
     private void cargarProductos() {
-        System.out.println(">>> Ejecutando cargarProductos()");
-        if (servicioProducto == null || tablaProductos == null) {
-            System.out.println(">>> servicioProducto o tablaProductos son nulos");
-            return;
-        }
         try {
-            List<Producto> lista = servicioProducto.listarProductos();
-            System.out.println(">>> Productos obtenidos: " + lista.size());
-            ObservableList<Producto> obs = FXCollections.observableArrayList(lista);
-            tablaProductos.setItems(obs);
-        } catch (SQLException e) {
+            List<Producto> productos = servicioProducto.listarProductos();
+            ObservableList<Producto> data = FXCollections.observableArrayList(productos);
+            colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+            colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+            colPrecio.setCellValueFactory(new PropertyValueFactory<>("precioUnitario"));
+            colStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
+            tablaProductos.setItems(data);
+        } catch (Exception e) {
             e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Error cargando productos: " + e.getMessage()).showAndWait();
         }
     }
 

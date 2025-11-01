@@ -46,4 +46,14 @@ public class DetalleVenta {
     public BigDecimal getPrecioUnitario() {
         return precioUnitario;
     }
+
+    public void setProductoId(Long productoId) {
+        this.productoId = productoId;
+    }
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+    public void setPrecioUnitario(BigDecimal precioUnitario) {
+        this.precioUnitario = precioUnitario;
+    }
 }

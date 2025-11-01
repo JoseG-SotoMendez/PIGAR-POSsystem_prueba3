@@ -17,6 +17,7 @@ public class MySQLVentaDAO implements VentaDAO {
     public Long guardarVentaConDetalles(Venta venta, List<DetalleVenta> detalles) throws SQLException {
         String sqlInsertVenta = "INSERT INTO ventas (cliente_id, fecha, total) VALUES (?, ?, ?)";
         String sqlInsertDetalle = "INSERT INTO detalle_venta (venta_id, producto_id, cantidad, precio_unitario) VALUES (?, ?, ?, ?)";
+        String sqlUpdateStock = "UPDATE productos SET stock = stock - ? WHERE id = ? AND stock >= ?";
 
         try (Connection conn = DataSourceConfig.getConnection()) {
             conn.setAutoCommit(false);
@@ -35,10 +36,13 @@ public class MySQLVentaDAO implements VentaDAO {
                 Long ventaId;
                 try (ResultSet keys = psVenta.getGeneratedKeys()) {
                     if (keys.next()) ventaId = keys.getLong(1);
-                    else throw new SQLException("No se pudo obtener id generado.");
+                    else throw new SQLException("No se pudo obtener id generado para la venta.");
                 }
 
-                try (PreparedStatement psDet = conn.prepareStatement(sqlInsertDetalle)) {
+                try (PreparedStatement psDet = conn.prepareStatement(sqlInsertDetalle);
+                     PreparedStatement psUpd = conn.prepareStatement(sqlUpdateStock)) {
+
+                    // Insertar detalles
                     for (DetalleVenta d : detalles) {
                         psDet.setLong(1, ventaId);
                         psDet.setLong(2, d.getProductoId());
@@ -47,10 +51,22 @@ public class MySQLVentaDAO implements VentaDAO {
                         psDet.addBatch();
                     }
                     psDet.executeBatch();
+
+                    // Actualizar stocks (en la misma transacción)
+                    for (DetalleVenta d : detalles) {
+                        psUpd.setInt(1, d.getCantidad());
+                        psUpd.setLong(2, d.getProductoId());
+                        psUpd.setInt(3, d.getCantidad());
+                        int affected = psUpd.executeUpdate();
+                        if (affected != 1) {
+                            throw new SQLException("Stock insuficiente para producto id " + d.getProductoId());
+                        }
+                    }
                 }
 
                 conn.commit();
                 return ventaId;
+
             } catch (SQLException e) {
                 try { conn.rollback(); } catch (SQLException ignore) {}
                 throw e;
@@ -59,6 +75,7 @@ public class MySQLVentaDAO implements VentaDAO {
             }
         }
     }
+
 
     @Override
     public Venta buscarPorId(Long id) throws SQLException {

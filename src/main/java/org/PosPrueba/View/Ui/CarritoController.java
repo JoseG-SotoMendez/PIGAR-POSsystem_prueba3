@@ -5,9 +5,15 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import org.PosPrueba.Controller.ControladorPOS;
 import org.PosPrueba.Model.ItemCarrito;
+import org.PosPrueba.Model.Service.ServicioCliente;
+import org.PosPrueba.Model.Service.ServicioProducto;
+import org.PosPrueba.Model.Service.ServicioUsuario;
+import org.PosPrueba.Model.Service.ServicioVenta;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 public class CarritoController {
 
@@ -25,6 +31,7 @@ public class CarritoController {
 
     @FXML
     private TableColumn<ItemCarrito, BigDecimal> colSubtotal;
+
 
     @FXML
     private Label lblSubtotal;
@@ -44,8 +51,18 @@ public class CarritoController {
     @FXML
     private Button btnCancelar;
 
-    private ObservableList<ItemCarrito> items;
-    private static final BigDecimal TASA_IMPUESTO = new BigDecimal("0.13"); // 13% IVA
+
+
+    private ServicioProducto servicioProducto;
+    private ServicioUsuario servicioUsuario;
+    private ServicioCliente servicioCliente;
+    private ServicioVenta servicioVenta;
+    private ControladorPOS controladorPOS;
+
+    private ObservableList<ItemCarrito> items= FXCollections.observableArrayList();
+    private static final BigDecimal TASA_IMPUESTO = new BigDecimal("0.19"); // 13% IVA
+
+
 
     @FXML
     public void initialize() {
@@ -96,17 +113,20 @@ public class CarritoController {
 
     @FXML
     private void onCobrar() {
-        if (items.isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Carrito vacío");
-            alert.setHeaderText("No hay items en el carrito");
-            alert.showAndWait();
-            return;
+        if (items.isEmpty()) { return; }
+        try {
+            // Aquí podrías mostrar diálogo para elegir cliente / método de pago; por ahora usar clienteId=null
+            Long ventaId = controladorPOS.onCobrar(new ArrayList<>(items), null);
+            Alert info = new Alert(Alert.AlertType.INFORMATION, "Venta registrada. ID = " + ventaId);
+            info.showAndWait();
+            items.clear();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Alert err = new Alert(Alert.AlertType.ERROR, "Error al procesar la venta: " + e.getMessage());
+            err.showAndWait();
         }
-
-        // Aquí se abriría el modal de checkout
-        System.out.println("Abrir checkout con total: " + lblTotal.getText());
     }
+
 
     @FXML
     private void onCancelar() {
@@ -167,4 +187,26 @@ public class CarritoController {
         String totalStr = lblTotal.getText().replace("$", "").trim();
         return new BigDecimal(totalStr);
     }
+
+
+    public void setControladorPOS(ControladorPOS controladorPOS) {
+        this.controladorPOS = controladorPOS;
+    }
+
+    public void setServicioProducto(ServicioProducto servicioProducto) {
+        this.servicioProducto = servicioProducto;
+    }
+
+    public void setServicioUsuario(ServicioUsuario servicioUsuario) {
+        this.servicioUsuario = servicioUsuario;
+    }
+
+    public void setServicioCliente(ServicioCliente servicioCliente) {
+        this.servicioCliente = servicioCliente;
+    }
+
+    public void setServicioVenta(ServicioVenta servicioVenta) {
+        this.servicioVenta = servicioVenta;
+    }
+
 }

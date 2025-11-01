@@ -4,8 +4,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import org.PosPrueba.Model.Service.ServicioCliente;
 import org.PosPrueba.Model.Service.ServicioProducto;
 import org.PosPrueba.Model.Producto;
+import org.PosPrueba.Model.Service.ServicioVenta;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -31,6 +33,14 @@ public class DashboardController {
     @FXML
     private VBox vboxAccionesRapidas;
 
+    private Label lblTotalVentas;
+    @FXML
+    private Label lblTotalClientes;
+    @FXML
+    private Label lblStockProductos;
+
+    private ServicioCliente servicioCliente;
+    private ServicioVenta servicioVenta;
     private ServicioProducto servicioProducto;
 
     @FXML
@@ -43,22 +53,23 @@ public class DashboardController {
         cargarDatos();
     }
 
+    public void setServicios(ServicioProducto sp, ServicioCliente sc, ServicioVenta sv) {
+        this.servicioProducto = sp;
+        this.servicioCliente = sc;
+        this.servicioVenta = sv;
+        cargarDatos();
+    }
+
     private void cargarDatos() {
         try {
-            // Ejemplo: contar productos con stock bajo
-            List<Producto> productos = servicioProducto.listarProductos();
-            long productosBajoStock = productos.stream()
-                    .filter(p -> p.getStock() < 10)
-                    .count();
-
-            lblProductosBajoStock.setText(String.valueOf(productosBajoStock));
-
-            // Los demás KPIs se cargarían desde servicios de ventas
-            lblVentasHoy.setText("$0.00");
-            lblTicketsHoy.setText("0");
-            lblTotalIngresos.setText("$0.00");
-
-        } catch (SQLException e) {
+            int totalClientes = servicioCliente.listarClientes().size();
+            int totalProductos = servicioProducto.listarProductos().size();
+            // sumar total de ventas
+            BigDecimal totalVentas = servicioVenta.obtenerTotalVentas();
+            lblTotalClientes.setText(String.valueOf(totalClientes));
+            lblStockProductos.setText(String.valueOf(totalProductos));
+            lblTotalVentas.setText("$" + totalVentas);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

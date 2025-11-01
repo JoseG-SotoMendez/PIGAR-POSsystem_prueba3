@@ -90,6 +90,7 @@ public class LoginController {
             MainControllerFX mainController = loader.getController();
             mainController.setServicioProducto(servicioProducto);
             mainController.setControladorPOS(controladorPOS);
+            mainController.setServicioCliente(servicioCliente);
             // Aquí inyectarías todos los servicios necesarios
             // mainController.setServicios(...);
 

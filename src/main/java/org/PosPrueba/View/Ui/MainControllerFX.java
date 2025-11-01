@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import java.io.IOException;
 import java.net.URL;
 import org.PosPrueba.Controller.ControladorPOS;
+import org.PosPrueba.Model.Service.ServicioCliente;
 import org.PosPrueba.Model.Service.ServicioProducto;
 
 public class MainControllerFX {
@@ -17,6 +18,11 @@ public class MainControllerFX {
 
     private ServicioProducto servicioProducto;
     private ControladorPOS controladorPOS;
+    private ServicioCliente servicioCliente;
+
+    public void setServicioCliente(ServicioCliente servicioCliente) {
+        this.servicioCliente = servicioCliente;
+    }
 
     public void setServicioProducto(ServicioProducto servicioProducto) {
         this.servicioProducto = servicioProducto;
@@ -82,8 +88,9 @@ public class MainControllerFX {
             Node root = loader.load();
 
             ClientesController clientesController = loader.getController();
-            // Inyectar servicios si aplica
-            // clientesController.setServicioCliente(new ServicioCliente(...));
+            if (this.servicioCliente != null) {
+                clientesController.setServicioCliente(this.servicioCliente);
+            }
 
             setCenterNode(root);
         } catch (IOException e) {
@@ -96,6 +103,15 @@ public class MainControllerFX {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Carrito.fxml"));
             Node root = loader.load();
+            CarritoController carritoController = loader.getController();
+            if (this.controladorPOS != null) {
+                carritoController.setControladorPOS(this.controladorPOS);
+            }
+            if (this.servicioProducto != null) {
+                carritoController.setServicioProducto(this.servicioProducto);
+            }
+
+
             setCenterNode(root);
         } catch (IOException e) {
             e.printStackTrace();

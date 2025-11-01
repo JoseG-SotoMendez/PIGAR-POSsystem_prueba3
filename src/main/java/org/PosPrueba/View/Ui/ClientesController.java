@@ -105,9 +105,13 @@ public class ClientesController {
     private void cargarClientes() {
         try {
             List<Cliente> lista = servicioCliente.listarClientes();
-            clientes.setAll(lista);
-        } catch (SQLException e) {
-            mostrarError("Error al cargar clientes", e.getMessage());
+            ObservableList<Cliente> data = FXCollections.observableArrayList(lista);
+            colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+            colDocumento.setCellValueFactory(new PropertyValueFactory<>("documento"));
+            colTelefono.setCellValueFactory(new PropertyValueFactory<>("telefono"));
+            colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+            tblClientes.setItems(data);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
