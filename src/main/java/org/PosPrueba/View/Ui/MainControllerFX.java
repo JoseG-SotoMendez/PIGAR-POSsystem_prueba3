@@ -13,12 +13,24 @@ import org.PosPrueba.Model.Service.ServicioProducto;
 
 public class MainControllerFX {
 
+    public MainControllerFX() {
+        try {
+            FXMLLoader loaderCarrito = new FXMLLoader(getClass().getResource("/fxml/Carrito.fxml"));
+            carritoRoot = loaderCarrito.load();
+            carritoController = loaderCarrito.getController();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @FXML
     private BorderPane rootPane; // debe coincidir con fx:id="rootPane" en Main.fxml
 
     private ServicioProducto servicioProducto;
     private ControladorPOS controladorPOS;
     private ServicioCliente servicioCliente;
+    private CarritoController carritoController;
+    private Node carritoRoot;
 
     public void setServicioCliente(ServicioCliente servicioCliente) {
         this.servicioCliente = servicioCliente;
@@ -54,27 +66,18 @@ public class MainControllerFX {
     @FXML
     private void onAbrirCatalogo(ActionEvent event) {
         try {
-            URL fxmlUrl = getClass().getResource("/fxml/Catalogo.fxml");
-            if (fxmlUrl == null) {
-                System.err.println("No se encontró /fxml/Catalogo.fxml en classpath");
-                return;
-            }
-            FXMLLoader loader = new FXMLLoader(fxmlUrl);
-            Node catalogoRoot = loader.load();
+            FXMLLoader loaderCatalogo = new FXMLLoader(getClass().getResource("/fxml/Catalogo.fxml"));
+            Node catalogoRoot = loaderCatalogo.load();
+            CatalogoControllerFX catalogoController = loaderCatalogo.getController();
 
-            Object ctrl = loader.getController();
-            if (ctrl instanceof CatalogoControllerFX) {
-                CatalogoControllerFX catalogoController = (CatalogoControllerFX) ctrl;
-                if (this.servicioProducto != null) {
-                    catalogoController.setServicioProducto(this.servicioProducto);
-                }
-                if (this.controladorPOS != null) {
-                    catalogoController.setControladorPOS(this.controladorPOS);
-                }
-            }
+            // Inyectar dependencias
+            catalogoController.setServicioProducto(servicioProducto);
+            catalogoController.setControladorPOS(controladorPOS);
+            catalogoController.setCarritoController(carritoController); // ✅ usar el mismo carrito
 
-            // colocar la vista cargada en el centro del BorderPane
+            // Mostrar catálogo en el centro y carrito a la derecha
             setCenterNode(catalogoRoot);
+            rootPane.setRight(carritoRoot); // ✅ ahora el carrito se ve y se actualiza
 
         } catch (IOException e) {
             e.printStackTrace();

@@ -25,6 +25,6 @@
         </columns>
     </TableView>
 
-    <Button text="Agregar 1 unidad (demo)" onAction="#onAgregar"/>
+    <Button text="Agregar unidad" onAction="#onAgregar"/>
 
 </VBox>

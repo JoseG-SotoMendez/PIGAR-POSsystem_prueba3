@@ -8,6 +8,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.PosPrueba.Controller.ControladorPOS;
+import org.PosPrueba.Model.ItemCarrito;
 import org.PosPrueba.Model.Producto;
 import org.PosPrueba.Model.Service.ServicioProducto;
 
@@ -37,6 +38,11 @@ public class CatalogoControllerFX {
 
     private ServicioProducto servicioProducto;
     private ControladorPOS controladorPOS;
+    private CarritoController carritoController;
+
+    public void setCarritoController(CarritoController carritoController) {
+        this.carritoController = carritoController;
+    }
 
     @FXML
     public void initialize() {
@@ -90,15 +96,25 @@ public class CatalogoControllerFX {
         }
 
         try {
-            // Lógica: usar controladorPOS para encapsular comandos / negocio
-            if (controladorPOS != null) {
-                controladorPOS.onAgregar(seleccionado.getId(), 1); // agregar 1 unidad (ejemplo)
-            } else if (servicioProducto != null) {
-                // fallback: si no hay controladorPOS, actualiza stock directamente
-                servicioProducto.actualizarStock(seleccionado.getId(), -1);
+            if (carritoController != null) {
+                // Crear un ItemCarrito con 1 unidad
+                ItemCarrito item = new ItemCarrito(
+                        seleccionado.getId(),
+                        seleccionado.getNombre(),
+                        1,
+                        seleccionado.getPrecioUnitario()
+                );
+
+                carritoController.agregarItem(item);
             }
-            // recargar lista para mostrar stock actualizado
-            cargarProductos();
+
+            // Actualizar stock visual (opcional)
+            if (controladorPOS != null) {
+                controladorPOS.onAgregar(seleccionado.getId(), 1);
+            }
+            tablaProductos.refresh();
+
+            cargarProductos(); // refrescar la tabla
         } catch (Exception ex) {
             ex.printStackTrace();
         }
